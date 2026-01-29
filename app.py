@@ -36,7 +36,7 @@ class QuoteHandler(BaseHTTPRequestHandler):
         return
 
 
-def run(host: str = "127.0.0.1", port: int = 8000):
+def run(host: str = "0.0.0.0", port: int = 8000):
     server = HTTPServer((host, port), QuoteHandler)
     print(f"Serving random quotes on http://{host}:{port}/quote")
     try:
@@ -49,8 +49,10 @@ def run(host: str = "127.0.0.1", port: int = 8000):
 
 if __name__ == "__main__":
     port_env = os.environ.get("PORT")
+    host_env = os.environ.get("HOST")
     try:
         port = int(port_env) if port_env else 8000
     except ValueError:
         port = 8000
-    run(port=port)
+    host = host_env if host_env else "0.0.0.0"
+    run(host=host, port=port)
